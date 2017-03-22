@@ -18,7 +18,6 @@ public class CatalogServer {
             @RequestParam(value="fname", defaultValue="World") String fname,
             @PathVariable(value="lname") String lname) {
         String msg = String.format(template, counter.getAndIncrement());
-        throw new IllegalArgumentException("netete");
-        //return new Greeting(fname, lname, msg);
+        return new Greeting(fname, lname, msg);
     }
 }
