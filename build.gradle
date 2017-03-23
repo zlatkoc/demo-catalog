@@ -8,12 +8,14 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath 'org.springframework:springloaded:1.2.6.RELEASE'
+		classpath 'com.zandero:utils:1.1'
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: "io.spring.dependency-management"
 apply plugin: 'org.springframework.boot'
 
 version = '0.0.1-SNAPSHOT'
@@ -29,6 +31,14 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.1'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
+
+	compile ('com.zandero:utils:1.1') {
+		exclude group: 'com.fasterxml.jackson.core' // remove as it is included in spring
+	}
+	compile('com.zandero:http:1.0') {
+		exclude group: 'com.fasterxml.jackson.core' // remove as it is included in spring
+	}
+
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
