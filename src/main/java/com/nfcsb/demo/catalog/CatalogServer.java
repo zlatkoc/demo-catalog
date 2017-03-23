@@ -2,8 +2,11 @@ package com.nfcsb.demo.catalog;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.nfcsb.demo.context.ContextJSON;
+import com.nfcsb.demo.context.RequestContextImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +37,13 @@ public class CatalogServer {
 
         String msg = String.format(template, counter.getAndIncrement());
         return new Greeting(fname, lname, msg);
+    }
+
+    @RequestMapping(value = "/hello",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ContextJSON hello(@Autowired RequestContextImpl context) {
+
+        return new ContextJSON(context);
     }
 }
