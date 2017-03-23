@@ -33,9 +33,11 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
 
 	compile ('com.zandero:utils:1.1') {
-		exclude group: 'com.fasterxml.jackson.core'
+		exclude group: 'com.fasterxml.jackson.core' // remove as it is included in spring
 	}
-	//compile('com.zandero:http:1.0')
+	compile('com.zandero:http:1.0') {
+		exclude group: 'com.fasterxml.jackson.core' // remove as it is included in spring
+	}
 
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')

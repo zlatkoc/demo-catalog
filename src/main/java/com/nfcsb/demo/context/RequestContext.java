@@ -22,7 +22,7 @@ public interface RequestContext {
 
 	Map<String, String> getHeaders();
 
-	String getQuery();
+	Map<String, String> getQuery();
 
 	String getPath();
 }

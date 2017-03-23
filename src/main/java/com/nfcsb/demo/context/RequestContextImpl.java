@@ -1,15 +1,13 @@
 package com.nfcsb.demo.context;
 
-//import com.zandero.http.RequestUtils;
+import com.zandero.http.RequestUtils;
+import com.zandero.utils.StringUtils;
 import com.zandero.utils.UrlUtils;
-
 import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +26,7 @@ public class RequestContextImpl implements RequestContext {
 
 	private final Map<String, String> headers;
 
-	private final String query;
+	private final Map<String, String> query;
 
 	private final String path;
 
@@ -38,15 +36,21 @@ public class RequestContextImpl implements RequestContext {
 
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
-		scheme = getScheme(request);
+		scheme = RequestUtils.getScheme(request);
 		port = request.getServerPort();
 
 		domain = UrlUtils.resolveDomain(request.getServerName());
 		path = request.getServletPath();
 
-		clientIpAddress = getClientIpAddress(request);
+		clientIpAddress = RequestUtils.getClientIpAddress(request);
 		headers = getHeaders(request);
-		query = request.getQueryString();
+
+		if (StringUtils.isNullOrEmptyTrimmed(request.getQueryString())) {
+			query = null;
+		}
+		else{
+			query = UrlUtils.getQuery(request.getQueryString());
+		}
 	}
 
 	@Override
@@ -108,7 +112,7 @@ public class RequestContextImpl implements RequestContext {
 	}
 
 	@Override
-	public String getQuery() {
+	public Map<String, String> getQuery() {
 
 		return query;
 	}
@@ -117,82 +121,5 @@ public class RequestContextImpl implements RequestContext {
 	public String getPath() {
 
 		return path;
-	}
-
-
-	/**
-	 * see: http://stackoverflow.com/questions/19598690/how-to-get-host-name-with-port-from-a-http-or-https-request/19599143#19599143
-	 * takes into account that request might go through a reverse proxy and request.getScheme() might not be correct
-	 *
-	 * @param request request
-	 * @return scheme (http, https ...)
-	 */
-	private static String getScheme(HttpServletRequest request) {
-
-		String scheme = request.getHeader("X-Forwarded-Proto");
-		if (scheme == null || scheme.trim().length() == 0) {
-			scheme = request.getScheme();
-		}
-
-		return scheme != null ? scheme.trim().toLowerCase() : null;
-	}
-
-	/**
-	 * Make sure that client not internal ip address is returned
-	 *
-	 * @param request to look up all possible headers
-	 * @return ip address
-	 */
-	private static String getClientIpAddress(HttpServletRequest request) {
-
-		String ip = request.getHeader("X-Forwarded-For");
-
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("Proxy-Client-IP");
-		}
-
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("WL-Proxy-Client-IP");
-		}
-
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("HTTP_CLIENT_IP");
-		}
-
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-		}
-
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getRemoteAddr();
-		}
-
-		return ip;
-	}
-
-	/**
-	 * Resolves domain name from given URL
-	 *
-	 * @param url to get domain name from
-	 * @return domain name or null if not resolved
-	 */
-	private static String resolveDomain(String url) {
-
-		if (url == null || url.trim().length() == 0) {
-			return null;
-		}
-
-		// check if url starts with scheme part (http:// ... ) if not add one manually
-		if (!url.contains("://")) {
-			url = "http://" + url;
-		}
-
-		try {
-			URI uri = new URI(url);
-			return uri.getHost();
-		}
-		catch (URISyntaxException e) {
-			return null;
-		}
 	}
 }

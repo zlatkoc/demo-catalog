@@ -13,4 +13,12 @@ public class CatalogApplicationTests {
 	public void contextLoads() {
 	}
 
+	/**
+	 * Testing RESTs in unit tests
+	 */
+	@Test
+	public void greetingRestTest() {
+
+
+	}
 }
