@@ -18,4 +18,10 @@ public class ErrorResponse {
 		message = ex.getMessage();
 		code = statusCode.value();
 	}
+
+	public ErrorResponse(String errorMessage, HttpStatus statusCode) {
+
+		message = errorMessage;
+		code = statusCode.value();
+	}
 }
