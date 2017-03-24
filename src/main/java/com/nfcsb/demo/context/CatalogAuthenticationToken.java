@@ -4,9 +4,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 /**
  * Dummy implementation ... a context ..
@@ -26,10 +25,7 @@ public class CatalogAuthenticationToken implements Authentication {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
-		 List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-
-		 grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		 return grantedAuthorities;
+		return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")); // fill up role that is checked in @PreAuthorization annotation
 	}
 
 	@Override

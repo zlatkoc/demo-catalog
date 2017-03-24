@@ -3,6 +3,8 @@ package com.nfcsb.demo.context;
 import com.zandero.http.RequestUtils;
 import com.zandero.utils.StringUtils;
 import com.zandero.utils.UrlUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -32,6 +34,8 @@ public class RequestContextImpl implements RequestContext {
 
 	private final String clientIpAddress;
 
+	private final CatalogAuthenticationToken token;
+
 	public RequestContextImpl() {
 
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -50,6 +54,15 @@ public class RequestContextImpl implements RequestContext {
 		}
 		else{
 			query = UrlUtils.getQuery(request.getQueryString());
+		}
+
+		// resolve authentication if any
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication instanceof CatalogAuthenticationToken) {
+			token = (CatalogAuthenticationToken)authentication;
+		}
+		else {
+			token = null;
 		}
 	}
 
@@ -121,5 +134,10 @@ public class RequestContextImpl implements RequestContext {
 	public String getPath() {
 
 		return path;
+	}
+
+	public CatalogAuthenticationToken getToken() {
+
+		return token;
 	}
 }

@@ -2,7 +2,6 @@ package com.nfcsb.demo.catalog;
 
 import com.nfcsb.demo.context.ContextJSON;
 import com.nfcsb.demo.context.RequestContextImpl;
-import com.nfcsb.demo.service.SecurityCheck;
 import com.nfcsb.demo.service.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +27,6 @@ public class CatalogServer {
 
 	private final SessionService currentSession;
 
-	@Autowired
-	SecurityCheck securityCheck;
 
 	@Autowired
 	public CatalogServer(SessionService sessionService) {
@@ -61,7 +58,7 @@ public class CatalogServer {
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ContextJSON hello(RequestContextImpl context) {
 
-		logger.info("Session: " + currentSession.get("Test"));
+		logger.info("Session: " + currentSession.get("test"));
 		return new ContextJSON(context);
 	}
 
@@ -89,17 +86,17 @@ public class CatalogServer {
 	@RequestMapping(value = "/private",
 		method = RequestMethod.GET,
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public String privateAccess() throws Throwable {
+	public String privateAccess(RequestContextImpl context) throws Throwable {
 
-		return "OK";
+		return context.getToken().getUser();
 	}
 
-	@PreAuthorize("@securityCheck.hasToken(authentication)") // service check via method call
+	@PreAuthorize("@securityCheck.hasToken(authentication)") // service check via method call (authentication is provided)
 	@RequestMapping(value = "/private2",
 		method = RequestMethod.GET,
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public String privateAccess2() throws Throwable {
+	public String privateAccess2(RequestContextImpl context) throws Throwable {
 
-		return "OK";
+		return context.getToken().getUser();
 	}
 }
