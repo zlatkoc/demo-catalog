@@ -40,7 +40,7 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 		}
 
 		if (ex instanceof AccessDeniedException) {
-			statusCode = HttpStatus.FORBIDDEN; // 403 ... maybe 401
+			statusCode = HttpStatus.UNAUTHORIZED; // maybe 401
 		}
 
 		ErrorResponse errorResponse = new ErrorResponse(ex, statusCode);

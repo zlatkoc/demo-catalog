@@ -58,7 +58,7 @@ public class CatalogServer {
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ContextJSON hello(RequestContextImpl context) {
 
-		logger.info("Session: " + currentSession.get("test"));
+		logger.info("Session: " + context.getUser());
 		return new ContextJSON(context);
 	}
 
@@ -88,7 +88,7 @@ public class CatalogServer {
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public String privateAccess(RequestContextImpl context) throws Throwable {
 
-		return context.getToken().getUser();
+		return context.getUser();
 	}
 
 	@PreAuthorize("@securityCheck.hasToken(authentication)") // service check via method call (authentication is provided)
@@ -97,6 +97,6 @@ public class CatalogServer {
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public String privateAccess2(RequestContextImpl context) throws Throwable {
 
-		return context.getToken().getUser();
+		return context.getUser();
 	}
 }

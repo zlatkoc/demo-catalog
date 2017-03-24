@@ -136,8 +136,8 @@ public class RequestContextImpl implements RequestContext {
 		return path;
 	}
 
-	public CatalogAuthenticationToken getToken() {
+	public String getUser() {
 
-		return token;
+		return token != null ? token.getUser() : null;
 	}
 }
