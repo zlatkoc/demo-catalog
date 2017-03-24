@@ -54,6 +54,7 @@ public class CatalogApplicationTests {
 			.andExpect(jsonPath("$.message").value("Hello, 0!"))
 			.andReturn();
 
+		// alternative way
 		Greeting entity = JsonUtils.fromJson(result.getResponse().getContentAsString(), Greeting.class);
 		assertEquals("World", entity.getFirstName());
 		assertEquals("1", entity.getLastName());
@@ -91,8 +92,11 @@ public class CatalogApplicationTests {
 		mockMvc.perform(get("/private2"))
 			.andExpect(status().isUnauthorized());
 
-		mockMvc.perform(get("/private2")
+		MvcResult result = mockMvc.perform(get("/private2")
 			.header("X-Token", "Dummy"))
-			.andExpect(status().isOk());
+			.andExpect(status().isOk())
+			.andReturn();
+
+		assertEquals("Dummy_user", result.getResponse().getContentAsString());
 	}
 }
