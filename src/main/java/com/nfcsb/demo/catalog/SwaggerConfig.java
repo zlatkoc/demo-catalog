@@ -21,6 +21,7 @@ public class SwaggerConfig {
         ArrayList<Parameter> globalOperationParameters = new ArrayList<>();
         ArrayList<SecurityScheme> securitySchemes = new ArrayList<>();
         securitySchemes.add(new ApiKey("X-Token", "X-Token", "header"));
+        securitySchemes.add(new BasicAuth("basic"));
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
