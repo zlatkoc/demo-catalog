@@ -49,7 +49,7 @@ public class CatalogAuthenticationFilter extends OncePerRequestFilter {
 
 		log.info("Filling up authentication: " + xAuth);
 		// Fill up authentication
-		Authentication auth = new CatalogAuthenticationToken(xAuth, user);
+		Authentication auth = new CatalogAuthenticationToken(user, xAuth);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
 		filterChain.doFilter(request, response);

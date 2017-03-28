@@ -43,6 +43,8 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 			statusCode = HttpStatus.UNAUTHORIZED; // maybe 401
 		}
 
+		logger.error(ex.getMessage(), ex);
+
 		ErrorResponse errorResponse = new ErrorResponse(ex, statusCode);
 		return new ResponseEntity<>(errorResponse, statusCode);
 	}

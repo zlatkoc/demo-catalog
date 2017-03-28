@@ -38,8 +38,10 @@ public class RequestContextImpl implements RequestContext {
 
 	public RequestContextImpl() {
 
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		this(((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest());
+	}
 
+	public RequestContextImpl(HttpServletRequest request) {
 		scheme = RequestUtils.getScheme(request);
 		port = request.getServerPort();
 

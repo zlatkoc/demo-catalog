@@ -1,9 +1,11 @@
 package com.nfcsb.demo.context;
 
+import com.zandero.http.RequestUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -17,8 +19,13 @@ public class CatalogAuthenticationToken implements Authentication {
 	// some user ... when logged in
 	private final String user;
 
-	public CatalogAuthenticationToken(String token, String user) { // todo ... this will be the RequestContext ...
+	public CatalogAuthenticationToken(String user, String token) { // todo ... this will be the RequestContext ...
 		this.token = token;
+		this.user = user;
+	}
+
+	public CatalogAuthenticationToken(String user, HttpServletRequest request) { // todo ... this will be the RequestContext ...
+		this.token = RequestUtils.getHeader(request, "X-Token");
 		this.user = user;
 	}
 

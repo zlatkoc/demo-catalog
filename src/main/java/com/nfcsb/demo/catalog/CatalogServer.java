@@ -27,7 +27,6 @@ public class CatalogServer {
 
 	private final SessionService currentSession;
 
-
 	@Autowired
 	public CatalogServer(SessionService sessionService) {
 

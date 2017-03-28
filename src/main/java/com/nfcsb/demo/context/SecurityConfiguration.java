@@ -18,12 +18,16 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	private CatalogAuthenticationFilter catalogFilter;
+	//private final CatalogAuthenticationFilter2 authenticationFilter;
+
+	private final CatalogAuthenticationFilter catalogFilter;
 
 	@Autowired
 	public SecurityConfiguration(CatalogAuthenticationFilter filter) {
 		super();
 		catalogFilter = filter;
+		//	authenticationFilter = other;
+		//catalogAuthenticationProvider = provider;
 	}
 
 	@Override
@@ -45,5 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/**")
 			.permitAll().and()
 			.addFilterBefore(catalogFilter, BasicAuthenticationFilter.class);
+			//.addFilterBefore(authenticationFilter, BasicAuthenticationFilter.class);
+
 	}
 }
