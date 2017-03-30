@@ -3,8 +3,6 @@ package com.nfcsb.demo.context;
 import com.zandero.http.RequestUtils;
 import com.zandero.utils.StringUtils;
 import com.zandero.utils.UrlUtils;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -34,7 +32,7 @@ public class RequestContextImpl implements RequestContext {
 
 	private final String clientIpAddress;
 
-	private final CatalogAuthenticationToken token;
+	//private final CatalogAuthenticationToken token;
 
 	public RequestContextImpl() {
 
@@ -42,11 +40,18 @@ public class RequestContextImpl implements RequestContext {
 	}
 
 	public RequestContextImpl(HttpServletRequest request) {
+
 		scheme = RequestUtils.getScheme(request);
 		port = request.getServerPort();
 
 		domain = UrlUtils.resolveDomain(request.getServerName());
-		path = request.getServletPath();
+
+		if (StringUtils.isNullOrEmptyTrimmed(request.getPathInfo())) {
+			path = request.getServletPath();
+		}
+		else{
+			path = request.getPathInfo();
+		}
 
 		clientIpAddress = RequestUtils.getClientIpAddress(request);
 		headers = getHeaders(request);
@@ -54,18 +59,18 @@ public class RequestContextImpl implements RequestContext {
 		if (StringUtils.isNullOrEmptyTrimmed(request.getQueryString())) {
 			query = null;
 		}
-		else{
+		else {
 			query = UrlUtils.getQuery(request.getQueryString());
 		}
 
-		// resolve authentication if any
+		/*// resolve authentication if any
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication instanceof CatalogAuthenticationToken) {
-			token = (CatalogAuthenticationToken)authentication;
+			token = (CatalogAuthenticationToken) authentication;
 		}
 		else {
 			token = null;
-		}
+		}*/
 	}
 
 	@Override
@@ -138,8 +143,13 @@ public class RequestContextImpl implements RequestContext {
 		return path;
 	}
 
-	public String getUser() {
+	/*public String getUser() {
 
 		return token != null ? token.getUser() : null;
 	}
+
+	public CatalogAuthenticationToken getToken() {
+
+		return token;
+	}*/
 }

@@ -23,7 +23,7 @@ public class CatalogAuthenticationFilter extends OncePerRequestFilter {
 
 	private static final Logger log = LoggerFactory.getLogger(CatalogAuthenticationFilter.class);
 
-	SessionService sessions;
+	private final SessionService sessions;
 
 	@Autowired
 	public CatalogAuthenticationFilter(SessionService sessionService) {
@@ -40,19 +40,13 @@ public class CatalogAuthenticationFilter extends OncePerRequestFilter {
 		String user = sessions.get(xAuth);
 
 		// validate the value in xAuth
-		if (user == null) {
-			log.info("No X-Token provided ... unauthenticated request!");
-			SecurityContextHolder.getContext().setAuthentication(null);
-			filterChain.doFilter(request, response);
-			return;
+		if (user != null) {
+			log.info("Filling up authentication: " + xAuth);
+			// Fill up authentication
+			Authentication auth = new CatalogAuthenticationToken(user, xAuth);
+			SecurityContextHolder.getContext().setAuthentication(auth);
 		}
-
-		log.info("Filling up authentication: " + xAuth);
-		// Fill up authentication
-		Authentication auth = new CatalogAuthenticationToken(user, xAuth);
-		SecurityContextHolder.getContext().setAuthentication(auth);
 
 		filterChain.doFilter(request, response);
 	}
-
 }

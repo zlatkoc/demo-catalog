@@ -24,12 +24,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public SecurityConfiguration(CatalogAuthenticationFilter filter) {
+
 		super();
 		catalogFilter = filter;
 		//	authenticationFilter = other;
 		//catalogAuthenticationProvider = provider;
 	}
 
+	/*@Bean
+	public DispatcherServlet myDispatcherServlet(ApplicationContext applicationContext) {
+
+		AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
+		webContext.setParent(applicationContext);
+
+
+		DispatcherServlet dispatcher = new DispatcherServlet(webContext);
+		dispatcher.setThrowExceptionIfNoHandlerFound(true);
+		return dispatcher;
+	}
+*/
 	@Override
 	public void configure(WebSecurity web) {
 
@@ -49,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/**")
 			.permitAll().and()
 			.addFilterBefore(catalogFilter, BasicAuthenticationFilter.class);
-			//.addFilterBefore(authenticationFilter, BasicAuthenticationFilter.class);
+		//.addFilterBefore(authenticationFilter, BasicAuthenticationFilter.class);
 
 	}
 }

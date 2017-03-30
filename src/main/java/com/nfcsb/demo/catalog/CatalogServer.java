@@ -1,7 +1,9 @@
 package com.nfcsb.demo.catalog;
 
+import com.nfcsb.demo.context.CatalogAuthenticationToken;
 import com.nfcsb.demo.context.ContextJSON;
 import com.nfcsb.demo.context.RequestContextImpl;
+import com.nfcsb.demo.exception.BadRequestException;
 import com.nfcsb.demo.service.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -55,9 +59,9 @@ public class CatalogServer {
 	@RequestMapping(value = "/hello",
 		method = RequestMethod.GET,
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ContextJSON hello(RequestContextImpl context) {
+	public ContextJSON hello(RequestContextImpl context, CatalogAuthenticationToken token) {
 
-		logger.info("Session: " + context.getUser());
+		logger.info("Session: " + (token != null ? token.getUser() : ""));
 		return new ContextJSON(context);
 	}
 
@@ -85,16 +89,17 @@ public class CatalogServer {
 	@RequestMapping(value = "/private",
 		method = RequestMethod.GET,
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public String privateAccess(RequestContextImpl context) throws Throwable {
+	public String privateAccess(Principal principal, Authentication authentication, RequestContextImpl context) throws Throwable {
 
-		return context.getUser();
+		return authentication.getName();
+
 	}
 
 	@PreAuthorize("@securityCheck.hasToken(authentication)") // service check via method call (authentication is provided)
 	@RequestMapping(value = "/private2",
 		method = RequestMethod.GET,
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public String privateAccess2(RequestContextImpl context) throws Throwable {
+	public String privateAccess2(CatalogAuthenticationToken context) throws Throwable {
 
 		return context.getUser();
 	}

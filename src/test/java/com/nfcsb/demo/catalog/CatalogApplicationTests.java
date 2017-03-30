@@ -71,8 +71,11 @@ public class CatalogApplicationTests {
 	@Test
 	public void testNonExistingAPI() throws Exception {
 
-		mockMvc.perform(get("/notExistent"))
-			.andExpect(status().isNotFound());
+		MvcResult result = mockMvc.perform(get("/notExistent"))
+			.andExpect(status().isNotFound())
+			.andReturn();
+
+		assertEquals("{\"message\":\"Path not found: '/notExistent'\",\"code\":404}", result.getResponse().getContentAsString());
 	}
 
 	@Test
@@ -98,5 +101,14 @@ public class CatalogApplicationTests {
 			.andReturn();
 
 		assertEquals("Dummy_user", result.getResponse().getContentAsString());
+	}
+
+	@Test
+	public void testException() throws Exception {
+
+		MvcResult result = mockMvc.perform(get("/throw/0"))
+			.andExpect(status().isBadRequest()).andReturn();
+
+		assertEquals("{\"message\":\"Missing proper value!\",\"code\":400}", result.getResponse().getContentAsString());
 	}
 }
