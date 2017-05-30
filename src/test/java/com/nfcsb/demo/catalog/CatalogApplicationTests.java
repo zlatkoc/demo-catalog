@@ -1,6 +1,6 @@
 package com.nfcsb.demo.catalog;
 
-import com.zandero.utils.JsonUtils;
+import com.zandero.utils.extra.JsonUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -27,28 +27,31 @@ repositories {
 	maven { url "https://repo.spring.io/milestone" }
 }
 
-dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-	compile 'org.springframework.boot:spring-boot-starter-security'
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.1'
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
 
-	compile ('com.zandero:utils:1.1') {
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile 'org.springframework.boot:spring-boot-starter-security'
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.1'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
+
+	compile ('com.zandero:utils:1.2')
+	compile ('com.zandero:utils.extra:1.2') {
 		exclude group: 'com.fasterxml.jackson.core' // remove as it is included in spring
 	}
 	compile('com.zandero:http:1.0') {
 		exclude group: 'com.fasterxml.jackson.core' // remove as it is included in spring
 	}
 
+
+
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 	testCompile 'org.springframework.security:spring-security-test:4.0.0.RC2'
 }
-
 idea {
-    module {
-        inheritOutputDirs = false
-        outputDir = file("$buildDir/classes/main/")
+	module {
+		inheritOutputDirs = false
+		outputDir = file("$buildDir/classes/main/")
     }
 }

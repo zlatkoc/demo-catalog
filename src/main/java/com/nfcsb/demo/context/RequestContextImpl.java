@@ -2,7 +2,7 @@ package com.nfcsb.demo.context;
 
 import com.zandero.http.RequestUtils;
 import com.zandero.utils.StringUtils;
-import com.zandero.utils.UrlUtils;
+import com.zandero.utils.extra.UrlUtils;
 import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
