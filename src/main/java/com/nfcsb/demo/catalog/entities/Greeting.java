@@ -1,4 +1,4 @@
-package com.nfcsb.demo.catalog;
+package com.nfcsb.demo.catalog.entities;
 
 import lombok.Data;
 

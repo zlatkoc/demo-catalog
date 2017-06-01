@@ -1,5 +1,6 @@
 package com.nfcsb.demo.catalog;
 
+import com.nfcsb.demo.catalog.entities.Greeting;
 import com.nfcsb.demo.context.CatalogAuthenticationToken;
 import com.nfcsb.demo.context.ContextJSON;
 import com.nfcsb.demo.context.RequestContextImpl;

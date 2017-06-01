@@ -56,13 +56,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
+		// this is a demo ... no need for CSRF protection
+		http.csrf().disable();
+
 		// Let all request past this point ... for all RESTs
 		// except when they have a @PreAuthorize annotation present
 		http.authorizeRequests()
 			.antMatchers("/**")
 			.permitAll().and()
 			.addFilterBefore(catalogFilter, BasicAuthenticationFilter.class);
-		//.addFilterBefore(authenticationFilter, BasicAuthenticationFilter.class);
-
 	}
 }

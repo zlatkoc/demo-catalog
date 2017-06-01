@@ -12,6 +12,7 @@ buildscript {
 	}
 }
 
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
@@ -20,6 +21,10 @@ apply plugin: 'org.springframework.boot'
 
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+
+springBoot {
+	mainClass = "com.nfcsb.demo.catalog.CatalogApplication"
+}
 
 repositories {
 	mavenCentral()
@@ -42,16 +47,16 @@ dependencies {
 		exclude group: 'com.fasterxml.jackson.core' // remove as it is included in spring
 	}
 
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
 
+	runtime('mysql:mysql-connector-java:5.1.38')
+	compile 'org.postgresql:postgresql:9.4-1206-jdbc42'
+
+	testCompile('junit:junit:4.12')
 
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 	testCompile 'org.springframework.security:spring-security-test:4.0.0.RC2'
-}
-idea {
-	module {
-		inheritOutputDirs = false
-		outputDir = file("$buildDir/classes/main/")
-    }
 }
