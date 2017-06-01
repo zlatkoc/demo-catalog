@@ -50,7 +50,6 @@ public class GroupRepositoryTest {
 		groups.save(group);
 
 		//
-
 		CatalogGroup compare = groups.findOne(group.getId());
 
 		assertEquals(2, compare.getMembers().size());

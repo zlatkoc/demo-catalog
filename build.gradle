@@ -1,17 +1,22 @@
 buildscript {
 	ext {
 		springBootVersion = '1.5.2.RELEASE'
+		postgresDriverVersion = '42.1.1'
 	}
 	repositories {
 		mavenCentral()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath 'org.springframework:springloaded:1.2.6.RELEASE'
-		classpath 'com.zandero:utils:1.1'
+        classpath "org.springframework:springloaded:1.2.6.RELEASE"
+
+		classpath "org.liquibase:liquibase-gradle-plugin:1.2.4"
+		classpath "org.liquibase.ext:liquibase-hibernate5:3.6"
+		classpath("org.postgresql:postgresql:${postgresDriverVersion}")
 	}
 }
 
+apply plugin: 'org.liquibase.gradle'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -34,6 +39,7 @@ repositories {
 
 
 dependencies {
+
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile 'org.springframework.boot:spring-boot-starter-security'
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.1'
@@ -51,7 +57,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-jdbc')
 
 	runtime('mysql:mysql-connector-java:5.1.38')
-	compile 'org.postgresql:postgresql:9.4-1206-jdbc42'
+	compile("org.postgresql:postgresql:${postgresDriverVersion}")
 
 	testCompile('junit:junit:4.12')
 
@@ -59,4 +65,20 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 	testCompile 'org.springframework.security:spring-security-test:4.0.0.RC2'
+}
+
+liquibase {
+	activities {
+		main {
+			url 'jdbc:postgresql://localhost:5432/test'
+			username 'drejc'
+			password ''
+			referenceDriver 'liquibase.ext.hibernate.database.connection.HibernateDriver'
+			//referenceUrl 'hibernate:spring:com.example.app.domain?dialect=org.hibernate.dialect.MySQL5Dialect'
+			referenceUrl  'hibernate:spring:com.nfcsb.demo.catalog.entities? dialect=org.hibernate.dialect.PostgreSQL82Dialect'
+
+			changeLogFile 'src/main/resources/db/db.changelog.xml'
+		}
+	}
+	runList = 'main'
 }
