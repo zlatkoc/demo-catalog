@@ -1,5 +1,6 @@
 package com.nfcsb.demo.catalog.entities;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "catalog_user")
 @ToString
+@EqualsAndHashCode
 //@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE LOWER(u.name) = LOWER(?1)")
 public class User {
 

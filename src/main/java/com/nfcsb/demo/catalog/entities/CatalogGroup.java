@@ -1,5 +1,6 @@
 package com.nfcsb.demo.catalog.entities;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "catalog_group")
+@EqualsAndHashCode
 public class CatalogGroup {
 
 	@Getter
