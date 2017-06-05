@@ -2,55 +2,7 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet author="drejc (generated)" id="1496320052739-1">
+    <changeSet author="drejc (generated)" id="1496408226341-1">
         <createSequence sequenceName="hibernate_sequence"/>
-    </changeSet>
-    <changeSet author="drejc (generated)" id="1496320052739-2">
-        <createTable tableName="catalog_group">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="drejc (generated)" id="1496320052739-3">
-        <createTable tableName="catalog_group_members">
-            <column name="catalog_group_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="members_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="drejc (generated)" id="1496320052739-4">
-        <createTable tableName="catalog_user">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="drejc (generated)" id="1496320052739-5">
-        <addPrimaryKey columnNames="catalog_group_id, members_id" constraintName="catalog_group_members_pkey" tableName="catalog_group_members"/>
-    </changeSet>
-    <changeSet author="drejc (generated)" id="1496320052739-6">
-        <addPrimaryKey columnNames="id" constraintName="catalog_group_pkey" tableName="catalog_group"/>
-    </changeSet>
-    <changeSet author="drejc (generated)" id="1496320052739-7">
-        <addPrimaryKey columnNames="id" constraintName="catalog_user_pkey" tableName="catalog_user"/>
-    </changeSet>
-    <changeSet author="drejc (generated)" id="1496320052739-8">
-        <addUniqueConstraint columnNames="members_id" constraintName="uk_ba8kxine2334opl63m4p8511b" tableName="catalog_group_members"/>
-    </changeSet>
-    <changeSet author="drejc (generated)" id="1496320052739-9">
-        <addForeignKeyConstraint baseColumnNames="members_id" baseTableName="catalog_group_members" constraintName="fk6g5ypsk8x32kxeyw9t8bw6fjf" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="catalog_user"/>
-    </changeSet>
-    <changeSet author="drejc (generated)" id="1496320052739-10">
-        <addForeignKeyConstraint baseColumnNames="catalog_group_id" baseTableName="catalog_group_members" constraintName="fkbard0rugcv33g8rhvyxcn6d8c" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="catalog_group"/>
     </changeSet>
 </databaseChangeLog>
