@@ -16,4 +16,10 @@ public class UserJSON {
 		id = user.getId();
 		username = user.getName();
 	}
+
+	public UserJSON(Uzer user) {
+
+		id = user.getId();
+		username = user.getName();
+	}
 }

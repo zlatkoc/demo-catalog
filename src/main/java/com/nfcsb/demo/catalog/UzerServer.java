@@ -1,11 +1,10 @@
 package com.nfcsb.demo.catalog;
 
-import com.nfcsb.demo.catalog.entities.User;
 import com.nfcsb.demo.catalog.entities.UserJSON;
+import com.nfcsb.demo.catalog.entities.Uzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,16 +18,17 @@ import java.util.List;
  */
 @ComponentScan({"com.nfcsb.demo"})
 @RestController
-@RequestMapping(value = "/",
+@RequestMapping(value = "/uzer",
                 produces = MediaType.APPLICATION_JSON_VALUE)
 @Transactional
-public class UserServer {
+public class UzerServer {
 
-	private final UserRepository users;
+	private final UzerRepository users;
 
-	@Autowired public UserServer(UserRepository userRepository) {
+	@Autowired
+	public UzerServer(UzerRepository repository) {
 
-		users = userRepository;
+		users = repository; //new UzerRepository();
 	}
 
 	@RequestMapping(value = "/test",
@@ -37,26 +37,28 @@ public class UserServer {
 		return "Hello there !";
 	}
 
+	@RequestMapping(value = "/fail",
+	                method = RequestMethod.GET)
+	public List<UserJSON> toFail()
+	{
+		final List<UserJSON> output = new ArrayList<>();
 
-	@RequestMapping(value = "/user",
-	                method = RequestMethod.GET,
+		final Iterable<Uzer> all = users.create();
+		all.forEach(uzer -> output.add(new UserJSON(uzer))); // copy result to List
+
+		return output;
+	}
+
+
+	@RequestMapping(method = RequestMethod.GET,
 	                produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<UserJSON> listUsers() {
 
 		final List<UserJSON> output = new ArrayList<>();
 
-		final Iterable<User> all = users.findAll();
-		all.forEach(user -> output.add(new UserJSON(user))); // copy result to List
+		final Iterable<Uzer> all = users.selectAll();
+		all.forEach(uzer -> output.add(new UserJSON(uzer))); // copy result to List
 
 		return output;
-	}
-
-	@RequestMapping(value = "/user/{username}",
-	                method = RequestMethod.POST,
-	                produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserJSON create(@PathVariable String username) {
-
-		User created = users.save(new User(username));
-		return new UserJSON(created);
 	}
 }

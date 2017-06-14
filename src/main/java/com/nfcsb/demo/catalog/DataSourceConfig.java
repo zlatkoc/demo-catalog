@@ -1,9 +1,9 @@
 package com.nfcsb.demo.catalog;
 
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -24,7 +24,7 @@ public class DataSourceConfig {
 	spring.datasource.username=drejc
 	spring.datasource.password=*/
 
-	@Bean
+	/*@Bean
 	@ConfigurationProperties(prefix = "spring.datasource")
 	public DataSource dataSource() {
 		DataSourceBuilder builder = DataSourceBuilder
@@ -32,8 +32,28 @@ public class DataSourceConfig {
 				.username("drejc")
 				.password("")
 				.url("jdbc:postgresql://localhost:5432/test");
-				//.driverClassName("org.postgresql.Driver");
+		//.driverClassName("org.postgresql.Driver");
 
 		return builder.build();
+	}*/
+
+	@Bean
+	public DataSource dataSource() {
+
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName("org.postgresql.Driver");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/test");
+		dataSource.setUsername("drejc");
+		dataSource.setPassword("");
+
+		return dataSource;
+	}
+
+	// Transaction manager bean definition
+	@Bean
+	public DataSourceTransactionManager dataSourceTransactionManager() {
+		DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
+		dataSourceTransactionManager.setDataSource(dataSource());
+		return dataSourceTransactionManager;
 	}
 }
